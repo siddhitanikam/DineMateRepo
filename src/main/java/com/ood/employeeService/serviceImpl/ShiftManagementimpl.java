@@ -20,6 +20,31 @@ public class ShiftManagementimpl implements ShiftManagement{
 	private DailyScheduleRepository dailyScheduleRepository;
 	
 	@Override
+	public List<Schedule> getEmployeeSchedule(int employeeId) {
+		// TODO Auto-generated method stub
+		List<Schedule> dlyScheduleList = new ArrayList<Schedule>();
+		dlyScheduleList = dailyScheduleRepository.findByEmpId(employeeId);
+		return dlyScheduleList;
+	}
+	
+	@Override
+	public List<Schedule> getEmployeeSchedule(String shiftDateStr) {
+		// TODO Auto-generated method stub
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date shiftDate;
+		List<Schedule> dlyScheduleList = new ArrayList<Schedule>();
+		try {
+			shiftDate = formatter.parse(shiftDateStr);
+			dlyScheduleList = dailyScheduleRepository.findByShiftDate(shiftDate);
+			System.out.println("in service -- " + shiftDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return dlyScheduleList;
+	}
+	
+	@Override
 	public List<Schedule> getEmployeeSchedule(int employeeId, String shiftDateStr) {
 		// TODO Auto-generated method stub
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -33,15 +58,23 @@ public class ShiftManagementimpl implements ShiftManagement{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		return dlyScheduleList;
 	}
-	
+
 	@Override
-	public List<Schedule> getEmployeeSchedule(int employeeId) {
+	public List<Schedule> getAvailableShifts(String shiftDateStr) {
 		// TODO Auto-generated method stub
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date shiftDate;
 		List<Schedule> dlyScheduleList = new ArrayList<Schedule>();
-		dlyScheduleList = dailyScheduleRepository.findByEmpId(employeeId);
+		try {
+			shiftDate = formatter.parse(shiftDateStr);
+			dlyScheduleList = dailyScheduleRepository.findByDateAndStatus(shiftDate);
+			System.out.println("in service -- " + shiftDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return dlyScheduleList;
 	}
 

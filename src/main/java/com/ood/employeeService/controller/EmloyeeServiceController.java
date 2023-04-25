@@ -28,17 +28,32 @@ public class EmloyeeServiceController {
 		return new ResponseEntity<>("checked", HttpStatus.OK);
 	}
 	
+	@PostMapping("/getScheduleById")
+	public List<Schedule> getScheduleById(@RequestBody EmloyeeGetScheduleDTO employeeDTO) {
+		System.out.println("In controller");
+		return shiftManagement.getEmployeeSchedule(employeeDTO.getEmpId());
+
+	}
+	
 	@PostMapping("/getScheduleByDate")
-	public List<Schedule> getSchedule(@RequestBody EmloyeeGetScheduleDTO employeeDTO) {
+	public List<Schedule> getScheduleByDate(@RequestBody EmloyeeGetScheduleDTO employeeDTO) {
+		System.out.println("In controller");
+		return shiftManagement.getEmployeeSchedule(employeeDTO.getShiftDate());
+
+	}
+	
+	
+	@PostMapping("/getScheduleByIdAndDate")
+	public List<Schedule> getScheduleByIdAndDate(@RequestBody EmloyeeGetScheduleDTO employeeDTO) {
 		System.out.println("In controller");
 		return shiftManagement.getEmployeeSchedule(employeeDTO.getEmpId(), employeeDTO.getShiftDate());
 
 	}
 	
-	@PostMapping("/getScheduleById")
-	public List<Schedule> getScheduleById(@RequestBody EmloyeeGetScheduleDTO employeeDTO) {
+	@PostMapping("/getAvailableShifts")
+	public List<Schedule> getAvailableShifts(@RequestBody EmloyeeGetScheduleDTO employeeDTO) {
 		System.out.println("In controller");
-		return shiftManagement.getEmployeeSchedule(employeeDTO.getEmpId());
+		return shiftManagement.getAvailableShifts(employeeDTO.getShiftDate());
 
 	}
 	
