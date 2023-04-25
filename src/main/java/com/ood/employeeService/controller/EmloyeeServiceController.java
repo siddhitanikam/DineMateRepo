@@ -1,5 +1,7 @@
 package com.ood.employeeService.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ood.employeeService.model.Schedule;
-import com.ood.employeeService.model.Employee;
+import com.ood.employeeService.dto.EmloyeeGetScheduleDTO;
 import com.ood.employeeService.service.ShiftManagement;
 
 @RestController
@@ -18,7 +20,7 @@ import com.ood.employeeService.service.ShiftManagement;
 public class EmloyeeServiceController {
 	
 	@Autowired
-	private ShiftManagement shiftManagemet;
+	private ShiftManagement shiftManagement;
 	
 	@GetMapping("/check")
 	public ResponseEntity<?> getAllEmployees() {
@@ -26,10 +28,19 @@ public class EmloyeeServiceController {
 		return new ResponseEntity<>("checked", HttpStatus.OK);
 	}
 	
-	@PostMapping("/getSchedule")
-	public Schedule getSchedule(@RequestBody Employee employee) {
+	@PostMapping("/getScheduleByDate")
+	public List<Schedule> getSchedule(@RequestBody EmloyeeGetScheduleDTO employeeDTO) {
 		System.out.println("In controller");
-		return shiftManagemet.getEmployeeSchedule(employee.getEmpId());
+		return shiftManagement.getEmployeeSchedule(employeeDTO.getEmpId(), employeeDTO.getShiftDate());
 
 	}
+	
+	@PostMapping("/getScheduleById")
+	public List<Schedule> getScheduleById(@RequestBody EmloyeeGetScheduleDTO employeeDTO) {
+		System.out.println("In controller");
+		return shiftManagement.getEmployeeSchedule(employeeDTO.getEmpId());
+
+	}
+	
+	
 }
