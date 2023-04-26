@@ -1,81 +1,78 @@
 package com.ood.employeeService.serviceImpl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ood.employeeService.model.Employee;
 import com.ood.employeeService.model.Schedule;
+import com.ood.employeeService.model.Shift;
+import com.ood.employeeService.model.Status;
 import com.ood.employeeService.repository.DailyScheduleRepository;
+import com.ood.employeeService.repository.EmployeeRepository;
+import com.ood.employeeService.repository.ShiftRepository;
 import com.ood.employeeService.service.ShiftManagement;
 
 @Service
-public class ShiftManagementimpl implements ShiftManagement{
+public class ShiftManagementImpl implements ShiftManagement{
+	
+	@Autowired
+	private ShiftRepository shiftRepository;
 	
 	@Autowired
 	private DailyScheduleRepository dailyScheduleRepository;
 	
+	@Autowired
+	private EmployeeRepository employeeRepository;
+	
 	@Override
-	public List<Schedule> getEmployeeSchedule(int employeeId) {
+	public List<Shift> getShifts(int employeeId) {
 		// TODO Auto-generated method stub
-		List<Schedule> dlyScheduleList = new ArrayList<Schedule>();
-		dlyScheduleList = dailyScheduleRepository.findByEmpId(employeeId);
-		return dlyScheduleList;
+		List<Shift> shiftlist = new ArrayList<Shift>();
+		shiftlist = shiftRepository.findByEmpId(employeeId);
+		return shiftlist;
 	}
 	
 	@Override
-	public List<Schedule> getEmployeeSchedule(String shiftDateStr) {
-		// TODO Auto-generated method stub
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date shiftDate;
-		List<Schedule> dlyScheduleList = new ArrayList<Schedule>();
-		try {
-			shiftDate = formatter.parse(shiftDateStr);
-			dlyScheduleList = dailyScheduleRepository.findByShiftDate(shiftDate);
-			System.out.println("in service -- " + shiftDate);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return dlyScheduleList;
+	public String addShiftToSubBinder(int scheduleId) {
+		Status s = new Status();
+		s.setStatusId(2);
+		s.setStatus("Pending");
+		Schedule sl = dailyScheduleRepository.findById(scheduleId).get();
+		sl.setStatus(s);
+		return dailyScheduleRepository.save(sl) != null ? "Success" : "Failed" ;
 	}
 	
 	@Override
-	public List<Schedule> getEmployeeSchedule(int employeeId, String shiftDateStr) {
-		// TODO Auto-generated method stub
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date shiftDate;
-		List<Schedule> dlyScheduleList = new ArrayList<Schedule>();
-		try {
-			shiftDate = formatter.parse(shiftDateStr);
-			dlyScheduleList = dailyScheduleRepository.findByEmpIdAndShiftDate(employeeId,shiftDate);
-			System.out.println("in service -- " + shiftDate);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return dlyScheduleList;
+	public String pickSubBinderShift(int employeeId, int scheduleId) {
+		Status s = new Status();
+		s.setStatusId(1);
+		s.setStatus("Working");
+		Schedule sl = dailyScheduleRepository.findById(scheduleId).get();
+		Employee emp = employeeRepository.findById(employeeId).get();
+		sl.setStatus(s);
+		sl.setEmployee(emp);
+		return dailyScheduleRepository.save(sl) != null ? "Success":"Failed";
 	}
 
 	@Override
-	public List<Schedule> getAvailableShifts(String shiftDateStr) {
+	public String addShift(int shiftId, int employeeId) {
 		// TODO Auto-generated method stub
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date shiftDate;
-		List<Schedule> dlyScheduleList = new ArrayList<Schedule>();
-		try {
-			shiftDate = formatter.parse(shiftDateStr);
-			dlyScheduleList = dailyScheduleRepository.findByDateAndStatus(shiftDate);
-			System.out.println("in service -- " + shiftDate);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return dlyScheduleList;
+		Shift shift = shiftRepository.findById(shiftId).get();
+		Employee emp = employeeRepository.findById(employeeId).get();
+		shift.setEmployee(emp);
+		return shiftRepository.save(shift)!=null ? "Success" : "Failed";
 	}
 
+	@Override
+	public String dropShift(int shiftId) {
+		// TODO Auto-generated method stub
+		Shift shift = shiftRepository.findById(shiftId).get();
+		shift.setEmployee(null);
+		return shiftRepository.save(shift)!=null ? "Success" : "Failed";
+	}
+	
+	
 }
