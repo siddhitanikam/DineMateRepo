@@ -13,6 +13,8 @@ public interface EmployeeSchedule {
 	
 	public List<Schedule> getEmployeeSchedule(int employeeId, String shiftDate);
 	
-	public List<Shift> getAvailableShifts(int employeeId);
+	public List<Shift> getAvailableShifts();
+	
+	public List<Schedule> getAvailableScheduleForSubbinder(String shiftDate);
 
 }

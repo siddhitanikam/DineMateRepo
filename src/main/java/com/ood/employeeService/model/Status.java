@@ -9,12 +9,25 @@ import jakarta.persistence.Table;
 @Table(name = "Status")
 public class Status {
 
-    @Id
-    @Column(name = "StatusId")
-    private int statusId;
+	@Id
+	@Column(name = "StatusId")
+	private int statusId;
 
-    @Column(name = "Status")
-    private String status;
+	@Column(name = "Status")
+	private String status;
+
+	@Column(name = "DWPoints")
+	private int DWpoints;
+
+	public Status(int statusId, String status, int dWpoints) {
+		super();
+		this.statusId = statusId;
+		this.status = status;
+		DWpoints = dWpoints;
+    }
+
+	public Status() {
+	}
 
 	public int getStatusId() {
 		return statusId;
@@ -31,4 +44,5 @@ public class Status {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
 }

@@ -11,8 +11,14 @@ import com.ood.employeeService.model.Shift;
 @Repository
 public interface ShiftRepository extends JpaRepository<Shift, Integer>{
 	public final static String getEmployeeScheduleById ="Select s from Shift s Join employee em Where em.empId = :empId";
+	public final static String getOpenShifts ="Select s from Shift s left Join employee em Where em.empId = null";
+
 	
 	@Query(getEmployeeScheduleById)
 	List<Shift> findByEmpId(int empId);
+	
+	@Query(getOpenShifts)
+	List<Shift> findOpenShifts();
+
 
 }

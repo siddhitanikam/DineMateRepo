@@ -74,5 +74,4 @@ public class ShiftManagementImpl implements ShiftManagement{
 		return shiftRepository.save(shift)!=null ? "Success" : "Failed";
 	}
 	
-	
 }

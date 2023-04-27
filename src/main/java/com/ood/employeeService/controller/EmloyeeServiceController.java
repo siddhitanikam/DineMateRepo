@@ -56,10 +56,17 @@ public class EmloyeeServiceController {
 
 	}
 	
-	@PostMapping("/getAvailableShifts")
-	public List<Shift> getAvailableShifts(@RequestBody EmloyeeGetScheduleDTO employeeDTO) {
+	@PostMapping("/getAvailableScheduleForSubbinder")
+	public List<Schedule> getScheduleByDateAndStatus(@RequestBody EmloyeeGetScheduleDTO employeeDTO) {
 		System.out.println("In controller");
-		return employeeSchedule.getAvailableShifts(employeeDTO.getEmpId());
+		return employeeSchedule.getAvailableScheduleForSubbinder(employeeDTO.getShiftDate());
+
+	}
+	
+	@PostMapping("/getAvailableShifts")
+	public List<Shift> getAvailableShifts() {
+		System.out.println("In controller");
+		return employeeSchedule.getAvailableShifts();
 
 	}
 	

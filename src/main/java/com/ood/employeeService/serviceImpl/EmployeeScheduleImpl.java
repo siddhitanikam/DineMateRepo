@@ -65,12 +65,30 @@ public class EmployeeScheduleImpl implements EmployeeSchedule{
 		}
 		return dlyScheduleList;
 	}
+	
+	@Override
+	public List<Schedule> getAvailableScheduleForSubbinder(String shiftDateStr) {
+		// TODO Auto-generated method stub
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date shiftDate;
+		List<Schedule> dlyScheduleList = new ArrayList<Schedule>();
+		try {
+			shiftDate = formatter.parse(shiftDateStr);
+			dlyScheduleList = dailyScheduleRepository.findByDateAndStatus(shiftDate);
+			System.out.println("in service -- " + shiftDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return dlyScheduleList;
+		
+	}
 
 	@Override
-	public List<Shift> getAvailableShifts(int employeeId) {
+	public List<Shift> getAvailableShifts() {
 		// TODO Auto-generated method stub
 		List<Shift> shiftList = new ArrayList<Shift>();
-		shiftList = shiftRepository.findByEmpId(employeeId);
+		shiftList = shiftRepository.findOpenShifts();
 		return shiftList;
 		
 	}
