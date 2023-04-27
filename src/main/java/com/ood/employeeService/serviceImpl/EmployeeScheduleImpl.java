@@ -93,4 +93,12 @@ public class EmployeeScheduleImpl implements EmployeeSchedule{
 		
 	}
 
+	@Override
+	public List<Shift> getShiftByEmpId(int empId) {
+		// TODO Auto-generated method stub
+		List<Shift> shiftList = new ArrayList<Shift>();
+		shiftList = shiftRepository.findByEmpId(empId);
+		return shiftList;
+	}
+
 }

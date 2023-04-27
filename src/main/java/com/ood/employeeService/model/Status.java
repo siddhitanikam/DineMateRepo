@@ -45,4 +45,12 @@ public class Status {
 		this.status = status;
 	}
 
+	public int getDWpoints() {
+		return DWpoints;
+	}
+
+	public void setDWpoints(int dWpoints) {
+		DWpoints = dWpoints;
+	}
+
 }

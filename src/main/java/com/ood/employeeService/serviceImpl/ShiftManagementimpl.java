@@ -6,13 +6,17 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ood.employeeService.dto.TaskAssignmentDTO;
 import com.ood.employeeService.model.Employee;
 import com.ood.employeeService.model.Schedule;
 import com.ood.employeeService.model.Shift;
 import com.ood.employeeService.model.Status;
+import com.ood.employeeService.model.Task;
 import com.ood.employeeService.repository.DailyScheduleRepository;
 import com.ood.employeeService.repository.EmployeeRepository;
 import com.ood.employeeService.repository.ShiftRepository;
+import com.ood.employeeService.repository.StatusRepository;
+import com.ood.employeeService.repository.TaskRepository;
 import com.ood.employeeService.service.ShiftManagement;
 
 @Service
@@ -26,6 +30,12 @@ public class ShiftManagementImpl implements ShiftManagement{
 	
 	@Autowired
 	private EmployeeRepository employeeRepository;
+	
+	@Autowired
+	private StatusRepository statusRepository;
+	
+	@Autowired
+	private TaskRepository taskRepository;
 	
 	@Override
 	public List<Shift> getShifts(int employeeId) {
@@ -74,4 +84,18 @@ public class ShiftManagementImpl implements ShiftManagement{
 		return shiftRepository.save(shift)!=null ? "Success" : "Failed";
 	}
 	
+	@Override
+	public String assignTask(TaskAssignmentDTO taskAssignmentDTO) {
+		
+		//AttendenceTypes attendenceTypes = AttendenceTypesRepository
+		Schedule schedule = dailyScheduleRepository.findById(taskAssignmentDTO.getScheduleId()).get();
+		Status status = statusRepository.findById(taskAssignmentDTO.getStatusId()).get();
+		Task task = taskRepository.findById(taskAssignmentDTO.getTaskId()).get();
+		Employee employee = employeeRepository.findById(schedule.getEmployee().getEmpId()).get();
+		schedule.setTask(task);
+		schedule.setStatus(status);
+		employee.setDwpoints(employee.getDwpoints() + status.getDWpoints());
+		schedule.setEmployee(employee);
+		return dailyScheduleRepository.save(schedule) != null?"Success":"Failed";
+	}
 }

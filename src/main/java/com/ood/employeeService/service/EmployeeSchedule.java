@@ -15,6 +15,8 @@ public interface EmployeeSchedule {
 	
 	public List<Shift> getAvailableShifts();
 	
+	public List<Shift> getShiftByEmpId(int employeeId);
+	
 	public List<Schedule> getAvailableScheduleForSubbinder(String shiftDate);
 
 }

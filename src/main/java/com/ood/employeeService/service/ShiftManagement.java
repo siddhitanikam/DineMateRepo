@@ -2,6 +2,7 @@ package com.ood.employeeService.service;
 
 import java.util.List;
 
+import com.ood.employeeService.dto.TaskAssignmentDTO;
 import com.ood.employeeService.model.Shift;
 
 public interface ShiftManagement {
@@ -15,4 +16,5 @@ public interface ShiftManagement {
 	
 	public String dropShift(int shiftId);
 
+	public String assignTask(TaskAssignmentDTO taskAssignmentDTO);
 }
